@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>Simple CRUD App</title> <!-- Corrected <titles> to <title> -->
+  
+  <link rel="stylesheet" href="style.css"> <!-- Moved this above the body -->
+</head>
+<style>
+body {
+  background-image: url('IMG_1944.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+</style>
+<body>
+  <input type="text" id="itemInput" placeholder="Enter an item" />
+  <button class="create-btn" onclick="createItem()">Add Item</button>
+
+  <table>
+    <thead> <!-- Corrected <tread> to <thead> -->
+      <tr>
+        <th>Item</th>
+        <th>Actions</th> <!-- Corrected "Actons" to "Actions" -->
+      </tr>
+    </thead>
+    <tbody id="itemTable"></tbody>
+  </table>
+
+  <script>
+    let items = [];
+    let updateIndex = null;
+
+    function renderTable() { // Corrected function name from renderTables to renderTable
+      const table = document.getElementById("itemTable");
+      table.innerHTML = ""; // Fixed typo from ElemenByld to getElementById
+      
+      items.forEach((item, index) => { // Fixed typo from item to items
+        table.innerHTML += // Changed =+ to +=
+          `<tr>
+              <td>${item}</td>
+              <td>
+                  <button class="update-btn" onclick="editItem(${index})">Edit</button> <!-- Fixed button syntax -->
+                  <button class="delete-btn" onclick="deleteItem(${index})">Delete</button> <!-- Fixed function name and button syntax -->
+              </td>  
+          </tr>`;
+      });
+    }
+
+    function createItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+      if (!value) {
+        alert("Please enter an item!");
+        return;
+      }
+      if (updateIndex === null) {
+        items.push(value); // Fixed typo from items,push to items.push
+      } else { 
+        items[updateIndex] = value; 
+        updateIndex = null;
+        document.querySelector(".create-btn").textContent = "Add Item"; // Fixed typo from document,querySelector to document.querySelector
+      }
+      input.value = ""; // Fixed typo from <input.value = "; to input.value = "";
+      renderTable(); // Call renderTable to update the displayed list
+    }
+
+    function editItem(index) {
+      const input = document.getElementById("itemInput");
+      input.value = items[index]; // Fixed typo from input,value to input.value
+      updateIndex = index; 
+      document.querySelector(".create-btn").textContent = "Update Item"; // Fixed typo from .create-btn) to .create-btn
+    }
+
+    function deleteItem(index) { // Fixed function name from deleteitem to deleteItem
+      if (confirm("Are you sure you want to delete this item?")) { // Added a question mark for clarity
+        items.splice(index, 1);
+        renderTable(); // Fixed typo from renderTable to renderTable
+      }
+    }
+  </script>
+</body>
+</html>
